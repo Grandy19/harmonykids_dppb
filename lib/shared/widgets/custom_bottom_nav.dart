@@ -15,7 +15,7 @@ class CustomBottomNav extends StatelessWidget {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     
-    // WARNA GRADIENT (Sesuai Request: 3577E5 -> 0F3974)
+    // WARNA GRADIENT 
     const Gradient mainGradient = LinearGradient(
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
@@ -30,7 +30,7 @@ class CustomBottomNav extends StatelessWidget {
       child: Stack(
         alignment: Alignment.bottomCenter,
         children: [
-          // 1. BACKGROUND BAR DENGAN LENGKUNGAN ORGANIK
+          // 1. BACKGROUND BAR DENGAN LENGKUNGAN 
           TweenAnimationBuilder<double>(
             tween: Tween(begin: 0, end: selectedIndex.toDouble()),
             duration: const Duration(milliseconds: 300),
@@ -54,7 +54,6 @@ class CustomBottomNav extends StatelessWidget {
             curve: Curves.easeOutCubic,
             builder: (context, animatedValue, child) {
               double itemWidth = size.width / 4;
-              // Posisi X tepat di tengah item
               double xOffset = (itemWidth * animatedValue) + (itemWidth / 2) - (60 / 2);
 
               return Positioned(
@@ -66,8 +65,7 @@ class CustomBottomNav extends StatelessWidget {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: const Color(0xFF3577E5), // Warna Biru Terang Solid
-                    // SETTINGAN SHADOW PERSIS SESUAI GAMBAR REFERENCE ANDA
-                    // (Position Y: 2, Blur: 30, Color: 6EC1E4)
+                    // SETTINGAN SHADOW 
                     boxShadow: [
                        BoxShadow(
                         color: const Color(0xFF6EC1E4).withOpacity(0.8), // Opacity disesuaikan agar tidak terlalu silau
@@ -153,7 +151,7 @@ class CustomBottomNav extends StatelessWidget {
   }
 }
 
-// --- PAINTER LENGKUNGAN ORGANIK (REVISI TOTAL) ---
+// --- PAINTER LENGKUNGAN ---
 class _CurvedNavBarPainter extends CustomPainter {
   final double selectedIndex; 
   final int itemsCount;
@@ -173,49 +171,32 @@ class _CurvedNavBarPainter extends CustomPainter {
 
     Path path = Path();
     
-    // --- SETTINGAN PRESISI AGAR MIRIP SCREENSHOT ---
+    // --- SETTINGAN PRESISI ---
     double itemWidth = size.width / itemsCount;
     double bumpCenterX = (itemWidth * selectedIndex) + (itemWidth / 2);
-    
-    // Bar dimulai dari Y=30 (memberi ruang untuk kepala lingkaran)
     double topY = 30; 
-    // Kedalaman cekungan (titik terbawah)
     double bottomY = topY +40; 
-    
-    // Radius kelengkungan (lebar bahu)
     double curveRadius = 38; 
-
     path.moveTo(0, topY);
-
-    // 1. Garis lurus kiri sampai mendekati lengkungan
     path.lineTo(bumpCenterX - curveRadius - 15, topY);
-
-    // 2. LENGKUNGAN KIRI (BAHU TURUN)
-    // Ini kuncinya: Control point pertama sejajar horizontal (topY) agar mulus
     path.cubicTo(
-      bumpCenterX - curveRadius, topY,           // CP1: Bahu kiri (tetap datar)
-      bumpCenterX - curveRadius + 0, bottomY,   // CP2: Lereng curam ke bawah
-      bumpCenterX, bottomY,                      // END: Dasar mangkuk
+      bumpCenterX - curveRadius, topY,        
+      bumpCenterX - curveRadius + 0, bottomY,   
+      bumpCenterX, bottomY,                      
     );
 
     // 3. LENGKUNGAN KANAN (BAHU NAIK)
     path.cubicTo(
-      bumpCenterX + curveRadius - 0, bottomY,   // CP1: Lereng curam naik
-      bumpCenterX + curveRadius, topY,           // CP2: Bahu kanan (kembali datar)
-      bumpCenterX + curveRadius + 15, topY,      // END: Kembali ke garis lurus
+      bumpCenterX + curveRadius - 0, bottomY,   
+      bumpCenterX + curveRadius, topY,           
+      bumpCenterX + curveRadius + 15, topY,      
     );
 
-    // 4. Garis lurus sisa ke kanan
     path.lineTo(size.width, topY);
-
-    // 5. Tutup shape
     path.lineTo(size.width, size.height);
     path.lineTo(0, size.height);
     path.close();
-
-    // Gambar Bayangan Bar (Shadow halus di bawah bar)
     canvas.drawShadow(path, Colors.black.withOpacity(0.15), 6.0, true);
-
     canvas.drawPath(path, paint);
   }
 

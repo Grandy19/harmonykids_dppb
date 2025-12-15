@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-// --- IMPORT FILE-FILE YANG SUDAH DIBUAT ---
 import 'core/app_colors.dart';
 import 'shared/widgets/custom_header.dart';
 import 'shared/widgets/custom_bottom_nav.dart';

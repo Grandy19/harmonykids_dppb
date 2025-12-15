@@ -7,7 +7,6 @@ class CustomHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Tinggi Header Total
     const double headerHeight = 240.0;
 
     return SizedBox(
