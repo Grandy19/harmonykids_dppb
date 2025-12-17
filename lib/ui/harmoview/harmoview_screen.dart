@@ -29,7 +29,7 @@ class _HarmoviewScreenState extends State<HarmoviewScreen> {
           SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             // Padding Top 260-280 disesuaikan agar konten muncul pas di bawah Header
-            padding: const EdgeInsets.only(top: 260, left: 24, right: 24, bottom: 100),
+            padding: const EdgeInsets.only(top: 250, left: 24, right: 24, bottom: 100),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

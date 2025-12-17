@@ -12,6 +12,7 @@ class EditProfileScreen extends StatefulWidget {
   State<EditProfileScreen> createState() => _EditProfileScreenState();
 }
 
+
 class _EditProfileScreenState extends State<EditProfileScreen> {
   final int _currentIndex = -1; // Navbar mati
 
@@ -50,7 +51,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             // UBAH DISINI: Ganti bottom: 100 menjadi bottom: 30
-            padding: const EdgeInsets.only(top: 260, left: 24, right: 24, bottom: 30),
+            padding: const EdgeInsets.only(top: 250, left: 24, right: 24, bottom: 30),
             child: Column(
               children: [
                 

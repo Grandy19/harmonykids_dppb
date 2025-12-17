@@ -88,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(
                   width: size.width * 0.5,
                   child: Text(
-                    "“Temukan TK/PG dan Daycare Terbaik Sekarang”",
+                    "“Cari Sekolah Anak Lebih Mudah”",
                     style: GoogleFonts.baloo2(
                       color: Colors.white,
                       fontSize: 16,

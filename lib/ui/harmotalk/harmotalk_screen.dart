@@ -28,7 +28,7 @@ class _HarmoTalkScreenState extends State<HarmoTalkScreen> {
           // ==========================================
           SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.only(top: 260, left: 24, right: 24, bottom: 100),
+            padding: const EdgeInsets.only(top: 250, left: 24, right: 24, bottom: 100),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
