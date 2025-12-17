@@ -74,6 +74,18 @@ flutter:
   - assets/images/bee.png
   - assets/images/texture.png
   - assets/images/cloud.png
+  - assets/images/ride.png
+  - assets/images/tale.png
+  - assets/images/talent.png
+  - assets/images/talk.png
+  - assets/images/view.png
+  - assets/images/avatar.png
+  - assets/images/anak_playground.png
+  - assets/images/logo.png
+  - assets/images/find.png
+  - assets/images/background.png
+  - assets/images/keluarga.png
+  - assets/images/plane.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

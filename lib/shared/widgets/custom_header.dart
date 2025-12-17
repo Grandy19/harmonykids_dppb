@@ -3,7 +3,13 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../core/app_colors.dart'; 
 
 class CustomHeader extends StatelessWidget {
-  const CustomHeader({super.key});
+  // 1. Menambahkan variabel title agar dinamis
+  final String title;
+
+  const CustomHeader({
+    super.key,
+    required this.title, // Wajib diisi saat widget ini dipanggil
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -70,8 +76,12 @@ class CustomHeader extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    // TOMBOL BACK
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        // 2. Logika Kembali ke Halaman Sebelumnya (Home)
+                        Navigator.pop(context);
+                      },
                       icon: Icon(
                         Icons.arrow_back_ios_new_rounded,
                         color: AppColors.primaryDark,
@@ -91,11 +101,12 @@ class CustomHeader extends StatelessWidget {
                       ),
                     ),
                     
+                    // JUDUL DINAMIS
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 4.0), 
                         child: Text(
-                          "HarmoFind", 
+                          title, // 3. Menggunakan variabel title dari parameter
                           textAlign: TextAlign.center,
                           overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.baloo2(

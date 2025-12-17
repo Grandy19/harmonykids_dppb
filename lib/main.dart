@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import 'core/app_colors.dart';
-import 'shared/widgets/custom_header.dart';
 import 'shared/widgets/custom_bottom_nav.dart';
+import 'ui/home/home_screen.dart'; 
+import 'ui/welcome/welcome_screen.dart';
+import 'ui/login/login.screen.dart'; 
+import 'ui/register/register_screen.dart'; 
+// 1. IMPORT FILE HARMOVIEW
+import 'ui/harmoview/harmoview_screen.dart'; 
+import 'ui/harmotalk/harmotalk_screen.dart';
+import 'ui/profile/edit_profile_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -23,12 +31,22 @@ class MyApp extends StatelessWidget {
           Theme.of(context).textTheme,
         ),
       ),
-      // Kita arahkan langsung ke halaman utama yang punya Navigasi
-      home: const MainScreen(),
+      initialRoute: '/', 
+      routes: {
+        '/': (context) => const WelcomeScreen(),
+        '/login': (context) => const LoginScreen(),
+        '/register': (context) => const RegisterScreen(),
+        '/main': (context) => const MainScreen(),
+        // 2. DAFTARKAN ROUTE HARMOVIEW DI SINI
+        '/harmoview': (context) => const HarmoviewScreen(),
+        '/harmotalk': (context) => const HarmoTalkScreen(),
+        '/edit_profile': (context) => const EditProfileScreen(),
+      },
     );
   }
 }
 
+// ... (Class MainScreen tetap sama)
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
@@ -37,12 +55,10 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  // Variabel untuk menyimpan index menu yang sedang dipilih (0 = Beranda)
   int _currentIndex = 0;
 
-  // List Halaman sederhana untuk simulasi ganti menu
   final List<Widget> _pages = [
-    const Center(child: Text("Halaman Beranda")),
+    const HomeScreen(),
     const Center(child: Text("Halaman Riwayat")),
     const Center(child: Text("Halaman Notifikasi")),
     const Center(child: Text("Halaman Pengaturan")),
@@ -51,30 +67,14 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
-      
-      // PENTING: extendBody: true membuat konten bisa memanjang sampai ke belakang
-      // navigation bar. Ini wajib agar efek lengkungan transparan terlihat bagus.
+      backgroundColor: Colors.white,
       extendBody: true, 
-
-      body: Column(
-        children: [
-          // 1. HEADER (Awan, Lebah, Kapsul Judul)
-          const CustomHeader(),
-          
-          // 2. KONTEN (Berubah sesuai menu yang dipilih)
-          Expanded(
-            child: _pages[_currentIndex],
-          ),
-        ],
-      ),
-
-      // 3. BOTTOM NAVIGATION BAR (Navigasi Bawah Melengkung)
+      body: _pages[_currentIndex],
       bottomNavigationBar: CustomBottomNav(
         selectedIndex: _currentIndex,
         onTap: (index) {
           setState(() {
-            _currentIndex = index; // Update halaman saat ikon diklik
+            _currentIndex = index;
           });
         },
       ),
