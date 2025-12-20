@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../home/home_screen.dart'; // Pastikan import ini benar untuk navigasi
+import '../home/home_screen.dart'; 
 import '../../main.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -18,24 +18,21 @@ class WelcomeScreen extends StatelessWidget {
         // 1. BACKGROUND IMAGE
         decoration: const BoxDecoration(
           image: DecorationImage(
-            // Pastikan file background.png sudah ada di assets/images/
             image: AssetImage('assets/images/background.png'),
-            fit: BoxFit.cover, // Agar gambar memenuhi layar
+            fit: BoxFit.cover, 
           ),
         ),
         child: Stack(
           children: [
-            // ==========================================
-            // 3. TEKS & TOMBOL (BAGIAN BAWAH)
-            // ==========================================
+            // TEKS & TOMBOL (BAGIAN BAWAH)
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
                 width: double.infinity,
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 50),
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 90),
                 child: Column(
-                  mainAxisSize: MainAxisSize.min, // Agar menempel di bawah
-                  crossAxisAlignment: CrossAxisAlignment.start, // Rata Kiri
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start, 
                   children: [
                     // Teks Judul
                     Text(
@@ -113,12 +110,12 @@ class WelcomeScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(15),
-        // Efek Shadow tombol (sedikit ungu di bawahnya seperti referensi)
+        // Efek Shadow tombol 
         boxShadow: const [
           BoxShadow(
-            color: Color(0xFFD8D5EA), // Warna bayangan
+            color: Color(0xFFD8D5EA), 
             blurRadius: 0,
-            offset: Offset(0, 10), // Geser ke bawah
+            offset: Offset(0, 10), 
           ),
         ],
       ),
@@ -131,9 +128,9 @@ class WelcomeScreen extends StatelessWidget {
             child: Text(
               text,
               style: GoogleFonts.baloo2(
-                color: const Color(0xFF0F3974), // Biru Tua Teks
+                color: const Color(0xFF0F3974), 
                 fontSize: 18,
-                fontWeight: FontWeight.w800, // Extra Bold
+                fontWeight: FontWeight.w800,
               ),
             ),
           ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-// import '../../core/app_colors.dart'; 
+import '../../core/app_colors.dart'; 
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -17,33 +17,26 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFFF9FCFD),
       
-      // PERUBAHAN DISINI: SingleChildScrollView membungkus seluruh Stack
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Stack(
           children: [
-            // ==========================================
-            // 1. KONTEN (BANNER & MENU) - LAYER BELAKANG
-            // ==========================================
+
+            // KONTEN (BANNER & MENU) - LAYER BELAKANG
             Padding(
-              // Padding Top 280 agar konten muncul di bawah Header
               padding: const EdgeInsets.only(top: 280, bottom: 100), 
               child: Column(
                 children: [
                   _buildPromoBanner(size),
 
-                  const SizedBox(height: 20), // Jarak 20px
+                  const SizedBox(height: 20),
 
                   _buildMenuGrid(),
                 ],
               ),
             ),
 
-            // ==========================================
-            // 2. HEADER - LAYER DEPAN (IKUT SCROLL)
-            // ==========================================
-            // Karena berada di dalam SingleChildScrollView, 
-            // Header ini akan ikut naik ke atas saat di-scroll.
+            // HEADER - LAYER DEPAN (IKUT SCROLL)
             const Positioned(
               top: 0, 
               left: 0, 

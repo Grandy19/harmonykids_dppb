@@ -20,8 +20,8 @@ class CustomBottomNav extends StatelessWidget {
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
       colors: [
-        Color(0xFF3577E5), // Biru Terang
-        Color(0xFF0F3974), // Biru Gelap
+        Color(0xFF3577E5), 
+        Color(0xFF0F3974), 
       ],
     );
 
@@ -30,11 +30,11 @@ class CustomBottomNav extends StatelessWidget {
       child: Stack(
         alignment: Alignment.bottomCenter,
         children: [
-          // 1. BACKGROUND BAR DENGAN LENGKUNGAN 
+          // BACKGROUND BAR DENGAN LENGKUNGAN 
           TweenAnimationBuilder<double>(
             tween: Tween(begin: 0, end: selectedIndex.toDouble()),
             duration: const Duration(milliseconds: 300),
-            curve: Curves.easeOutCubic, // Curve lebih smooth
+            curve: Curves.easeOutCubic, 
             builder: (context, animatedValue, child) {
               return CustomPaint(
                 size: Size(size.width, 100),
@@ -47,7 +47,7 @@ class CustomBottomNav extends StatelessWidget {
             },
           ),
 
-          // 2. TOMBOL LINGKARAN MENGAMBANG
+          // TOMBOL LINGKARAN MENGAMBANG
           TweenAnimationBuilder<double>(
             tween: Tween(begin: 0, end: selectedIndex.toDouble()),
             duration: const Duration(milliseconds: 300),
@@ -58,17 +58,17 @@ class CustomBottomNav extends StatelessWidget {
 
               return Positioned(
                 left: xOffset,
-                top: 0, // Posisi lingkaran (Floating)
+                top: 0, 
                 child: Container(
                   width: 60,
                   height: 60,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: const Color(0xFF3577E5), // Warna Biru Terang Solid
+                    color: const Color(0xFF3577E5),
                     // SETTINGAN SHADOW 
                     boxShadow: [
                        BoxShadow(
-                        color: const Color(0xFF6EC1E4).withOpacity(0.8), // Opacity disesuaikan agar tidak terlalu silau
+                        color: const Color(0xFF6EC1E4).withOpacity(0.8),
                         blurRadius: 30, 
                         spreadRadius: 0,
                         offset: const Offset(0, 2),
@@ -89,7 +89,7 @@ class CustomBottomNav extends StatelessWidget {
             },
           ),
 
-          // 3. IKON-IKON MENU (STATIS)
+          // IKON-IKON MENU (STATIS)
           Positioned(
             bottom: 0,
             left: 0,
@@ -151,7 +151,7 @@ class CustomBottomNav extends StatelessWidget {
   }
 }
 
-// --- PAINTER LENGKUNGAN ---
+// PAINTER LENGKUNGAN
 class _CurvedNavBarPainter extends CustomPainter {
   final double selectedIndex; 
   final int itemsCount;
@@ -171,7 +171,7 @@ class _CurvedNavBarPainter extends CustomPainter {
 
     Path path = Path();
     
-    // --- SETTINGAN PRESISI ---
+    // SETTINGAN PRESISI
     double itemWidth = size.width / itemsCount;
     double bumpCenterX = (itemWidth * selectedIndex) + (itemWidth / 2);
     double topY = 30; 
@@ -185,7 +185,7 @@ class _CurvedNavBarPainter extends CustomPainter {
       bumpCenterX, bottomY,                      
     );
 
-    // 3. LENGKUNGAN KANAN (BAHU NAIK)
+    // LENGKUNGAN KANAN (BAHU NAIK)
     path.cubicTo(
       bumpCenterX + curveRadius - 0, bottomY,   
       bumpCenterX + curveRadius, topY,           

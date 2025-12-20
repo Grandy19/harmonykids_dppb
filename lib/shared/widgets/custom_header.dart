@@ -19,7 +19,7 @@ class CustomHeader extends StatelessWidget {
       height: headerHeight,
       child: Stack(
         children: [
-          // 1. BACKGROUND TEXTURE
+          // BACKGROUND TEXTURE
           Container(
             height: headerHeight - 50, 
             width: double.infinity,
@@ -31,7 +31,7 @@ class CustomHeader extends StatelessWidget {
             ),
           ),
 
-          // 2. GAMBAR AWAN
+          // GAMBAR AWAN
           Positioned(
             bottom: 0,
             left: 0,
@@ -43,7 +43,7 @@ class CustomHeader extends StatelessWidget {
             ),
           ),
 
-          // 3. Kapsul Judul
+          // Kapsul Judul
           Positioned(
             top: 60,
             left: 0,
@@ -79,7 +79,7 @@ class CustomHeader extends StatelessWidget {
                     // TOMBOL BACK
                     IconButton(
                       onPressed: () {
-                        // 2. Logika Kembali ke Halaman Sebelumnya (Home)
+                        // Logika Kembali ke Halaman Sebelumnya (Home)
                         Navigator.pop(context);
                       },
                       icon: Icon(
@@ -106,7 +106,7 @@ class CustomHeader extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 4.0), 
                         child: Text(
-                          title, // 3. Menggunakan variabel title dari parameter
+                          title, 
                           textAlign: TextAlign.center,
                           overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.baloo2(
@@ -132,7 +132,7 @@ class CustomHeader extends StatelessWidget {
             ),
           ),
 
-          // 4. Gambar Lebah
+          // Gambar Lebah
           Positioned(
             top: 35,
             left: 10,
@@ -148,7 +148,7 @@ class CustomHeader extends StatelessWidget {
             ),
           ),
           
-          // 5. Titik Putih
+          // Titik Putih
           Positioned(
             top: 90,
             right: 15,

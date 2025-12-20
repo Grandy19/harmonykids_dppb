@@ -45,9 +45,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       
       body: Stack(
         children: [
-          // ==========================================
           // LAYER 1: KONTEN SCROLL
-          // ==========================================
           SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             // UBAH DISINI: Ganti bottom: 100 menjadi bottom: 30
@@ -55,7 +53,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             child: Column(
               children: [
                 
-                // --- 1. FOTO PROFIL (TEMPLATE ICON MURNI) ---
+                // FOTO PROFIL (TEMPLATE ICON MURNI) 
                 Center(
                   child: Stack(
                     alignment: Alignment.bottomRight,
@@ -65,7 +63,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         width: 110,
                         height: 110,
                         decoration: BoxDecoration(
-                          color: const Color(0xFFD8D5EA), // Warna placeholder (Abu-Ungu)
+                          color: const Color(0xFFD8D5EA), 
                           shape: BoxShape.circle,
                           border: Border.all(color: Colors.white, width: 4),
                           boxShadow: [
@@ -84,7 +82,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         ),
                       ),
                       
-                      // Tombol Edit Kecil (Lingkaran Biru)
+                      // Tombol Edit Kecil 
                       Container(
                         width: 35,
                         height: 35,
@@ -101,7 +99,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
                 const SizedBox(height: 32),
 
-                // --- 2. FORM FIELDS (TINGGI 60px, RADIUS 15px) ---
+                // FORM FIELDS 
                 
                 _buildTemplateInput(
                   controller: _nameController,
@@ -154,10 +152,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
                 const SizedBox(height: 40),
 
-                // --- 3. TOMBOL SIMPAN ---
+                // TOMBOL SIMPAN
                 Container(
                   width: double.infinity,
-                  height: 50, // Tombol Simpan (sedikit lebih kecil dari input)
+                  height: 50, 
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(15),
@@ -194,9 +192,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             ),
           ),
 
-          // ==========================================
           // LAYER 2: CUSTOM HEADER
-          // ==========================================
           const Positioned(
             top: 0, left: 0, right: 0,
             child: CustomHeader(
@@ -206,9 +202,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         ],
       ),
 
-      // ==========================================
       // BOTTOM NAV
-      // ==========================================
       bottomNavigationBar: CustomBottomNav(
         selectedIndex: _currentIndex, 
         onTap: (index) {
@@ -220,7 +214,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
   }
 
-  // --- WIDGET HELPER INPUT FIELD (UPDATED) ---
+  // WIDGET HELPER INPUT FIELD
   Widget _buildTemplateInput({
     required TextEditingController controller,
     required String hintText,
@@ -228,11 +222,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     TextInputType inputType = TextInputType.text,
   }) {
     return Container(
-      // 1. SET TINGGI 60px
       height: 60, 
       decoration: BoxDecoration(
         color: Colors.white,
-        // 2. SET RADIUS 15px
         borderRadius: BorderRadius.circular(15), 
         boxShadow: [
           BoxShadow(
@@ -242,12 +234,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           ),
         ],
       ),
-      // Agar TextField berada di tengah secara vertikal di dalam Container 60px
       alignment: Alignment.center, 
       child: TextField(
         controller: controller,
         keyboardType: inputType,
-        // Align text vertical agar pas dengan ikon
         textAlignVertical: TextAlignVertical.center,
         style: GoogleFonts.baloo2(
           color: _primaryBlue,
@@ -272,8 +262,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           prefixIconConstraints: const BoxConstraints(minWidth: 48),
           
           border: InputBorder.none,
-          // Hapus vertical padding bawaan agar tidak konflik dengan height 60px container
-          // Kita sudah pakai Alignment.center pada Container
           contentPadding: const EdgeInsets.symmetric(horizontal: 20),
           isCollapsed: true, 
           

@@ -41,6 +41,7 @@ class MyApp extends StatelessWidget {
         '/harmoview': (context) => const HarmoviewScreen(),
         '/harmotalk': (context) => const HarmoTalkScreen(),
         '/edit_profile': (context) => const EditProfileScreen(),
+        '/home': (context) => const MainScreen(),
       },
     );
   }

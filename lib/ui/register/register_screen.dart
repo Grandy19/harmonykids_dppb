@@ -1,14 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../cubits/register/register_cubit.dart';
+import '../../cubits/register/register_state.dart';
+import '../../shared/widgets/auth_text_field.dart';
 
-class RegisterScreen extends StatefulWidget {
+// WRAPPER: MENYEDIAKAN CUBIT
+class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});
 
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => RegisterCubit(),
+      child: const RegisterView(),
+    );
+  }
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+// VIEW: TAMPILAN UI
+class RegisterView extends StatefulWidget {
+  const RegisterView({super.key});
+
+  @override
+  State<RegisterView> createState() => _RegisterViewState();
+}
+
+class _RegisterViewState extends State<RegisterView> {
   // Controllers
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -16,11 +34,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
 
-  // State untuk Checkbox
+  // UI State (Hanya untuk mata password & checkbox)
+  bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
   bool _isAgreed = false;
 
   // Warna Utama
-  final Color _primaryBlue = const Color(0xFF1A73E8); 
+  final Color _primaryBlue = const Color(0xFF1A73E8);
 
   @override
   void dispose() {
@@ -32,292 +52,290 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFF0F3974),
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        // 1. BACKGROUND GRADIENT
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFF0F3974), // Warna Atas
-              Color(0xFF2E7CF6), // Warna Bawah
+  // LOGIKA REGISTER (PANGGIL CUBIT)
+  void _onRegisterPressed() {
+    context.read<RegisterCubit>().registerWali(
+          name: _nameController.text,
+          email: _emailController.text,
+          phone: _phoneController.text,
+          password: _passwordController.text,
+          confirmPassword: _confirmPasswordController.text,
+          isAgreed: _isAgreed,
+        );
+  }
+
+  // POP-UP SUKSES 
+  void _showSuccessDialog(String message) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          title: const Column(
+            children: [
+              Icon(Icons.check_circle_outline_rounded, color: Colors.green, size: 60),
+              SizedBox(height: 10),
+              Text("Registrasi Berhasil!", style: TextStyle(fontWeight: FontWeight.bold)),
             ],
           ),
-        ),
-        child: SafeArea(
-          // PENGGUNAAN STACK AGAR TOMBOL BACK DIAM (TIDAK IKUT SCROLL)
-          child: Stack(
+          content: Text(
+            message,
+            textAlign: TextAlign.center,
+            style: GoogleFonts.baloo2(fontSize: 16),
+          ),
+          actions: [
+            Center(
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF0F3974),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                ),
+                onPressed: () {
+                  Navigator.pop(ctx); // Tutup Dialog
+                  Navigator.pushReplacementNamed(context, '/login'); // Pindah ke Login
+                },
+                child: Text("Silakan Login", style: GoogleFonts.baloo2(color: Colors.white)),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // POP-UP GAGAL
+  void _showFailureDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          title: const Column(
             children: [
-              // --- LAYER 1: KONTEN YANG BISA DI-SCROLL ---
-              SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 10.0),
-                child: Column(
-                  children: [
-                    // Memberi jarak kosong di atas agar konten awal tidak tertutup tombol back
-                    // atau disesuaikan dengan posisi gambar yang diinginkan.
-                    const SizedBox(height: 60), 
+              Icon(Icons.cancel_outlined, color: Colors.red, size: 60),
+              SizedBox(height: 10),
+              Text("Gagal Daftar", style: TextStyle(fontWeight: FontWeight.bold)),
+            ],
+          ),
+          content: Text(
+            message,
+            textAlign: TextAlign.center,
+            style: GoogleFonts.baloo2(fontSize: 16),
+          ),
+          actions: [
+            Center(
+              child: TextButton(
+                onPressed: () => Navigator.pop(ctx),
+                child: Text("Perbaiki Data", style: GoogleFonts.baloo2(color: Colors.red, fontWeight: FontWeight.bold)),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
-                    // 2. GAMBAR KELUARGA (DIGESER KE ATAS MENGGUNAKAN TRANSFORM)
-                    Transform.translate(
-                      offset: const Offset(0, -40), // Naikkan lebih tinggi lagi karena ada SizedBox di atas
-                      child: Image.asset(
-                        'assets/images/keluarga.png',
-                        height: 350, 
-                        fit: BoxFit.contain,
-                        errorBuilder: (context, error, stackTrace) {
-                          return const Icon(
-                            Icons.family_restroom_rounded,
-                            size: 100,
-                            color: Colors.white,
-                          );
-                        },
-                      ),
-                    ),
+  @override
+  Widget build(BuildContext context) {
+    return BlocConsumer<RegisterCubit, RegisterState>(
+      listener: (context, state) {
+        if (state is RegisterSuccess) {
+          _showSuccessDialog(state.message);
+        } else if (state is RegisterFailure) {
+          _showFailureDialog(state.message);
+        }
+      },
+      builder: (context, state) {
+        bool isLoading = (state is RegisterLoading);
 
-                    // TEXT HEADER (DIGESER KE ATAS JUGA)
-                    Transform.translate(
-                      offset: const Offset(0, -32), 
-                      child: Column(
-                        children: [
-                          Text(
-                            "“Hai, Mama Papa!”",
-                            textAlign: TextAlign.center,
-                            style: GoogleFonts.baloo2(
-                              fontSize: 32,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                          Text(
-                            "“Yuk, bergabung dan tumbuh bersama\nHarmonyKids!”",
-                            textAlign: TextAlign.center,
-                            style: GoogleFonts.baloo2(
-                              fontSize: 16,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    // FORM FIELDS
-                    // Kita kurangi jarak di sini karena elemen di atasnya sudah ditarik ke atas (Offset -80)
-                    // Gunakan SizedBox negatif atau kecil jika jaraknya terlalu jauh
-                    const SizedBox(height: 0), 
-
-                    // Nama Lengkap
-                    _buildTextField(
-                      controller: _nameController,
-                      hintText: "Nama Lengkap",
-                      icon: Icons.person_rounded,
-                    ),
-                    const SizedBox(height: 20),
-
-                    // Email
-                    _buildTextField(
-                      controller: _emailController,
-                      hintText: "Email",
-                      icon: Icons.email_rounded,
-                      inputType: TextInputType.emailAddress,
-                    ),
-                    const SizedBox(height: 20),
-
-                    // Nomor Telepon
-                    _buildTextField(
-                      controller: _phoneController,
-                      hintText: "Nomor Telepon",
-                      icon: Icons.phone_rounded,
-                      inputType: TextInputType.phone,
-                    ),
-                    const SizedBox(height: 20),
-
-                    // Kata Sandi
-                    _buildTextField(
-                      controller: _passwordController,
-                      hintText: "Kata Sandi",
-                      icon: Icons.lock_rounded,
-                      isPassword: true,
-                    ),
-                    const SizedBox(height: 20),
-
-                    // Konfirmasi Kata Sandi
-                    _buildTextField(
-                      controller: _confirmPasswordController,
-                      hintText: "Konfirmasi Kata Sandi",
-                      icon: Icons.verified_user_rounded,
-                      isPassword: true,
-                    ),
-
-                    const SizedBox(height: 20),
-
-                    // CHECKBOX & TERMS
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+        return Scaffold(
+          backgroundColor: const Color(0xFF0F3974),
+          body: Container(
+            width: double.infinity,
+            height: double.infinity,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color(0xFF0F3974),
+                  Color(0xFF2E7CF6),
+                ],
+              ),
+            ),
+            child: SafeArea(
+              child: Stack(
+                children: [
+                  // --- KONTEN SCROLL ---
+                  SingleChildScrollView(
+                    padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 10.0),
+                    child: Column(
                       children: [
-                        SizedBox(
-                          width: 24,
-                          height: 24,
-                          child: Checkbox(
-                            value: _isAgreed,
-                            activeColor: Colors.white,
-                            checkColor: _primaryBlue,
-                            side: const BorderSide(color: Colors.white, width: 2),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                            onChanged: (value) {
-                              setState(() {
-                                _isAgreed = value ?? false;
-                              });
+                        const SizedBox(height: 60),
+
+                        // GAMBAR KELUARGA
+                        Transform.translate(
+                          offset: const Offset(0, -40),
+                          child: Image.asset(
+                            'assets/images/keluarga.png',
+                            height: 300,
+                            fit: BoxFit.contain,
+                            errorBuilder: (context, error, stackTrace) {
+                              return const Icon(Icons.family_restroom_rounded, size: 100, color: Colors.white);
                             },
                           ),
                         ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Text(
-                            "Saya setuju dengan Ketentuan Layanan dan Kebijakan Privasi HarmonyKids",
-                            style: GoogleFonts.baloo2(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                            ),
+
+                        // TEXT HEADER
+                        Transform.translate(
+                          offset: const Offset(0, -32),
+                          child: Column(
+                            children: [
+                              Text(
+                                "“Hai, Mama Papa!”",
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.baloo2(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.white),
+                              ),
+                              Text(
+                                "“Yuk, bergabung dan tumbuh bersama\nHarmonyKids!”",
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.baloo2(fontSize: 16, color: Colors.white, fontWeight: FontWeight.w500),
+                              ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
 
-                    const SizedBox(height: 40),
+                        // INPUT FIELDS
+                        AuthTextField(
+                          controller: _nameController,
+                          hintText: "Nama Lengkap",
+                          icon: Icons.person_rounded,
+                        ),
+                        const SizedBox(height: 20),
+                        AuthTextField(
+                          controller: _emailController,
+                          hintText: "Email",
+                          icon: Icons.email_rounded,
+                          inputType: TextInputType.emailAddress,
+                        ),
+                        const SizedBox(height: 20),
+                        AuthTextField(
+                          controller: _phoneController,
+                          hintText: "Nomor Telepon",
+                          icon: Icons.phone_rounded,
+                          inputType: TextInputType.phone,
+                        ),
+                        const SizedBox(height: 20),
+                        AuthTextField(
+                          controller: _passwordController,
+                          hintText: "Kata Sandi",
+                          icon: Icons.lock_rounded,
+                          isPassword: true,
+                          isObscure: _obscurePassword,
+                          onToggleObscure: () => setState(() => _obscurePassword = !_obscurePassword),
+                        ),
+                        const SizedBox(height: 20),
+                        AuthTextField(
+                          controller: _confirmPasswordController,
+                          hintText: "Konfirmasi Kata Sandi",
+                          icon: Icons.verified_user_rounded,
+                          isPassword: true,
+                          isObscure: _obscureConfirmPassword,
+                          onToggleObscure: () => setState(() => _obscureConfirmPassword = !_obscureConfirmPassword),
+                        ),
 
-                    // TOMBOL DAFTAR
-                    Container(
-                      width: double.infinity,
-                      height: 45,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(15),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Color(0xFFD8D5EA),
-                            blurRadius: 0,
-                            offset: Offset(0, 8),
+                        const SizedBox(height: 20),
+
+                        // CHECKBOX
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              width: 24,
+                              height: 24,
+                              child: Checkbox(
+                                value: _isAgreed,
+                                activeColor: Colors.white,
+                                checkColor: _primaryBlue,
+                                side: const BorderSide(color: Colors.white, width: 2),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+                                onChanged: (value) {
+                                  setState(() {
+                                    _isAgreed = value ?? false;
+                                  });
+                                },
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Text(
+                                "Saya setuju dengan Ketentuan Layanan dan Kebijakan Privasi HarmonyKids",
+                                style: GoogleFonts.baloo2(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        const SizedBox(height: 40),
+
+                        // TOMBOL DAFTAR
+                        Container(
+                          width: double.infinity,
+                          height: 45,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(15),
+                            boxShadow: const [BoxShadow(color: Color(0xFFD8D5EA), blurRadius: 0, offset: Offset(0, 8))],
                           ),
-                        ],
-                      ),
-                      child: Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          borderRadius: BorderRadius.circular(15),
-                          onTap: () {
-                            if (_isAgreed) {
-                              Navigator.pushReplacementNamed(context, '/login');
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text("Harap setujui syarat & ketentuan")),
-                              );
-                            }
-                          },
-                          child: Center(
-                            child: Text(
-                              "Daftar",
-                              style: GoogleFonts.baloo2(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: const Color(0xFF0D253F),
+                          child: Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              borderRadius: BorderRadius.circular(15),
+                              onTap: isLoading ? null : _onRegisterPressed, // Logic di Cubit
+                              child: Center(
+                                child: isLoading
+                                    ? const SizedBox(
+                                        width: 24, height: 24,
+                                        child: CircularProgressIndicator(strokeWidth: 2, color: Color(0xFF0D253F)),
+                                      )
+                                    : Text(
+                                        "Daftar",
+                                        style: GoogleFonts.baloo2(fontSize: 18, fontWeight: FontWeight.bold, color: const Color(0xFF0D253F)),
+                                      ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
 
-                    const SizedBox(height: 32),
-                  ],
-                ),
-              ),
-
-              // --- LAYER 2: TOMBOL BACK FIXED (DIAM DI TEMPAT) ---
-              // Widget ini diletakkan di luar SingleChildScrollView
-              Positioned(
-                top: 16, // Jarak dari atas SafeArea
-                left: 24, // Jarak dari kiri (sesuai padding horizontal konten)
-                child: GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child: Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                      boxShadow: [ // Opsional: Tambah shadow biar tombol terlihat melayang
-                        BoxShadow(
-                          color: Colors.black12,
-                          blurRadius: 4,
-                          offset: Offset(0, 2),
-                        ),
+                        const SizedBox(height: 32),
                       ],
                     ),
-                    child: Icon(Icons.chevron_left, color: _primaryBlue, size: 28),
                   ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 
-  // --- REUSABLE TEXT FIELD WIDGET ---
-  Widget _buildTextField({
-    required TextEditingController controller,
-    required String hintText,
-    required IconData icon,
-    bool isPassword = false,
-    TextInputType inputType = TextInputType.text,
-  }) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 0,
-            offset: const Offset(0, 4),
+                  // --- TOMBOL BACK FIXED ---
+                  Positioned(
+                    top: 16,
+                    left: 24,
+                    child: GestureDetector(
+                      onTap: () => Navigator.pop(context),
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                          boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, 2))],
+                        ),
+                        child: Icon(Icons.chevron_left, color: _primaryBlue, size: 28),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
-        ],
-      ),
-      child: TextField(
-        controller: controller,
-        obscureText: isPassword,
-        keyboardType: inputType,
-        style: GoogleFonts.baloo2(
-          color: _primaryBlue,
-          fontSize: 16,
-          fontWeight: FontWeight.bold,
-        ),
-        decoration: InputDecoration(
-          hintText: hintText,
-          hintStyle: GoogleFonts.baloo2(
-            color: _primaryBlue.withOpacity(0.6),
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
-          prefixIcon: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 14.0),
-            child: Icon(icon, color: _primaryBlue, size: 26),
-          ),
-          prefixIconConstraints: const BoxConstraints(minWidth: 50),
-          border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(vertical: 16),
-        ),
-      ),
+        );
+      },
     );
   }
 }
