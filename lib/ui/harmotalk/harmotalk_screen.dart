@@ -23,9 +23,8 @@ class _HarmoTalkScreenState extends State<HarmoTalkScreen> {
       backgroundColor: const Color(0xFFF9FCFD),
       body: Stack(
         children: [
-          // ==========================================
+
           // KONTEN HALAMAN
-          // ==========================================
           SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             padding: const EdgeInsets.only(top: 250, left: 24, right: 24, bottom: 100),
@@ -33,7 +32,7 @@ class _HarmoTalkScreenState extends State<HarmoTalkScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 
-                // --- FILTER & SORT BAR (Sesuai Gambar Referensi) ---
+                // FILTER & SORT BAR (Sesuai Gambar Referensi)
                 Row(
                   children: [
                     // Tombol Filter: Semua
@@ -51,7 +50,7 @@ class _HarmoTalkScreenState extends State<HarmoTalkScreen> {
                   ],
                 ),
 
-                // --- AREA KOSONG (Tempat Postingan Nanti) ---
+                // AREA KOSONG (Tempat Postingan Nanti)
                 const SizedBox(height: 50),
                 Center(
                   child: Text(
@@ -64,9 +63,7 @@ class _HarmoTalkScreenState extends State<HarmoTalkScreen> {
             ),
           ),
 
-          // ==========================================
           // HEADER CUSTOM
-          // ==========================================
           const Positioned(
             top: 0, left: 0, right: 0,
             child: CustomHeader(title: "HarmoTalk"), 
@@ -74,9 +71,7 @@ class _HarmoTalkScreenState extends State<HarmoTalkScreen> {
         ],
       ),
       
-      // ==========================================
       // BOTTOM NAV
-      // ==========================================
       bottomNavigationBar: CustomBottomNav(
         selectedIndex: _currentIndex, 
         onTap: (index) { if (index==0) Navigator.popUntil(context, (r) => r.isFirst); },
@@ -84,7 +79,7 @@ class _HarmoTalkScreenState extends State<HarmoTalkScreen> {
     );
   }
 
-  // Widget Tombol Filter Sederhana
+  // Widget Tombol 
   Widget _buildFilterBtn(String title) {
     bool isActive = _selectedFilter == title;
     return InkWell(
@@ -99,13 +94,13 @@ class _HarmoTalkScreenState extends State<HarmoTalkScreen> {
         child: Text(title, style: GoogleFonts.baloo2(
           color: isActive ? Colors.white : const Color(0xFF3577E5),
           fontWeight: FontWeight.bold,
-          fontSize: 14, // Ukuran font disesuaikan agar rapi
+          fontSize: 14, 
         )),
       ),
     );
   }
 
-  // Widget Dropdown Sort (Terbaru & Terpopuler)
+  // Widget Dropdown Sort 
   Widget _buildSortDropdown() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12),

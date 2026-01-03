@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../core/app_colors.dart'; 
+// import '../../core/app_colors.dart'; // Pastikan path ini benar/ada
+import '../harmofind/harmofind_screen.dart'; // Import Screen HarmoFind
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -36,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
 
-            // HEADER - LAYER DEPAN (IKUT SCROLL)
+            // HEADER - LAYER DEPAN (IKUT SCROLL/FIXED POSITIONED)
             const Positioned(
               top: 0, 
               left: 0, 
@@ -158,19 +159,22 @@ class _HomeScreenState extends State<HomeScreen> {
         itemCount: menus.length,
         itemBuilder: (context, index) {
           final menu = menus[index];
-          return InkWell(
+          return GestureDetector( // Gunakan GestureDetector agar lebih responsif
             onTap: () {
-              // Logika Navigasi
-              if (menu['title'] == 'HarmoView') {
+              // --- LOGIKA NAVIGASI ---
+              if (menu['title'] == 'HarmoFind') {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const HarmoFindScreen()),
+                );
+              } else if (menu['title'] == 'HarmoView') {
                 Navigator.pushNamed(context, '/harmoview');
               } else if (menu['title'] == 'HarmoTalk') {
                 Navigator.pushNamed(context, '/harmotalk');
               } else {
-                // Placeholder untuk menu lain yang belum ada halamannya
                 print("${menu['title']} diklik");
               }
             },
-            borderRadius: BorderRadius.circular(16), // Efek ripple rounded
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -274,7 +278,7 @@ class _HomeHeaderState extends State<HomeHeader> {
             ),
           ),
 
-// 3. KONTEN PROFILE
+          // 3. KONTEN PROFILE
           Positioned(
             top: 30, left: 24, right: 24,
             child: Row(
@@ -282,10 +286,9 @@ class _HomeHeaderState extends State<HomeHeader> {
               children: [
                 Row(
                   children: [
-                    // --- UBAH DI SINI: Bungkus Container Avatar dengan GestureDetector ---
+                    // Avatar Link
                     GestureDetector(
                       onTap: () {
-                        // Arahkan ke route Edit Profile
                         Navigator.pushNamed(context, '/edit_profile');
                       },
                       child: Container(
@@ -300,11 +303,9 @@ class _HomeHeaderState extends State<HomeHeader> {
                         ),
                       ),
                     ),
-                    // ---------------------------------------------------------------------
-
                     const SizedBox(width: 12),
                     
-                    // Opsional: Bungkus Teks juga biar bisa diklik (jika mau)
+                    // Teks Nama Link
                     GestureDetector(
                       onTap: () => Navigator.pushNamed(context, '/edit_profile'),
                       child: Column(
@@ -320,7 +321,7 @@ class _HomeHeaderState extends State<HomeHeader> {
                   ],
                 ),
                 
-                // Logo di kanan (tetap sama)
+                // Logo
                 Image.asset(
                   'assets/images/logo.png',
                   height: 65, fit: BoxFit.contain,

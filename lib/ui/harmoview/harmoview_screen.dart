@@ -13,7 +13,6 @@ class HarmoviewScreen extends StatefulWidget {
 }
 
 class _HarmoviewScreenState extends State<HarmoviewScreen> {
-  // Index -1 agar tidak ada indikator aktif di bottom nav
   final int _currentIndex = -1; 
 
   @override
@@ -23,24 +22,18 @@ class _HarmoviewScreenState extends State<HarmoviewScreen> {
       
       body: Stack(
         children: [
-          // ==========================================
           // LAYER 1: KONTEN SCROLL (DI BELAKANG HEADER)
-          // ==========================================
           SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
-            // Padding Top 260-280 disesuaikan agar konten muncul pas di bawah Header
             padding: const EdgeInsets.only(top: 250, left: 24, right: 24, bottom: 100),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                
-                // --- NOTE: Header Manual (Row) sudah DIHAPUS ---
-                // Konten langsung dimulai dengan Input Field
 
-                // INPUT 1: Tk Ceria (Biru)
+                // INPUT 1
                 _buildCompareInput(
                   text: "Tk Ceria",
-                  dotColor: const Color(0xFF2E7CF6), // Biru
+                  dotColor: const Color(0xFF2E7CF6), 
                 ),
 
                 const SizedBox(height: 30),
@@ -101,13 +94,9 @@ class _HarmoviewScreenState extends State<HarmoviewScreen> {
             ),
           ),
 
-          // ==========================================
           // LAYER 2: CUSTOM HEADER (FIXED DI ATAS)
-          // ==========================================
           const Positioned(
             top: 0, left: 0, right: 0,
-            // Memanggil CustomHeader dengan Judul "HarmoView"
-            // Tombol Back sudah otomatis ada di dalam widget ini
             child: CustomHeader(
               title: "HarmoView",
             ), 
@@ -115,9 +104,7 @@ class _HarmoviewScreenState extends State<HarmoviewScreen> {
         ],
       ),
 
-      // ==========================================
       // BOTTOM NAV
-      // ==========================================
       bottomNavigationBar: CustomBottomNav(
         selectedIndex: _currentIndex, 
         onTap: (index) {
@@ -130,7 +117,7 @@ class _HarmoviewScreenState extends State<HarmoviewScreen> {
     );
   }
 
-  // WIDGET CARD PENCARIAN (Helper)
+  // WIDGET CARD PENCARIAN 
   Widget _buildCompareInput({
     required String text,
     required Color dotColor,

@@ -8,7 +8,6 @@ class WelcomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Ukuran layar untuk mengatur posisi responsif
     final Size size = MediaQuery.of(context).size;
 
     return Scaffold(

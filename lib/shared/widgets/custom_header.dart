@@ -3,12 +3,12 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../core/app_colors.dart'; 
 
 class CustomHeader extends StatelessWidget {
-  // 1. Menambahkan variabel title agar dinamis
+  // Menambahkan variabel title agar dinamis
   final String title;
 
   const CustomHeader({
     super.key,
-    required this.title, // Wajib diisi saat widget ini dipanggil
+    required this.title, 
   });
 
   @override

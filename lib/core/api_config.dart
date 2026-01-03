@@ -1,9 +1,6 @@
 class ApiConfig {
   static const String baseUrl = "http://10.0.2.2:8000/api"; 
-
-  // ENDPOINTS (DAFTAR ALAMAT)
-  
-  // --- Auth ---
+  // Auth
   static const String login = "$baseUrl/login";
   static const String registerWali = "$baseUrl/register/wali";
   static const String registerPengelola = "$baseUrl/register/pengelola";
@@ -11,7 +8,7 @@ class ApiConfig {
 
   // Profile / User
   static const String user = "$baseUrl/user"; 
-  static const String updateProfile = "$baseUrl/profile/update"; // Sesuaikan route Laravel nanti
+  static const String updateProfile = "$baseUrl/profile/update"; 
 
   // Instansi / Sekolah
   static const String instansi = "$baseUrl/instansi";
